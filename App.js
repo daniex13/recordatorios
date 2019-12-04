@@ -1,42 +1,30 @@
-import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import item from './Item';
-import datos from "./Datos";
-import Button from "./Button";
+import React from "react";
+import * as Font from "expo-font";
+import { 
+          Text, 
+          View
+        } from "react-native";
+import Applications from "./src/Index"
 
-export default function App() {
-  handlePress = () =>{}
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Recordatorios</Text>
-      </View>
-      <View style={styles.view}>
-        <Button title= 'Agregar' onPress={this.handlePress}/>
-      </View>
-      <FlatList data= {datos} renderItem={item}/>
-    </View>
-  );
+export default class App extends React.Component{
+  state = {
+    fontLoaded: false,
+  };
+
+  async componentDidMount(){
+    await Font.loadAsync({
+        'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+    })
+    this.setState({ fontLoaded: true })
+  }
+
+  render() {
+    const { fontLoaded } = this.state;
+    if(!fontLoaded){
+      return <View><Text>Cargando fuente...</Text></View>
+    }
+      return (
+        <Applications />
+    );
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  },
-  header: {
-    height:100,
-    borderBottomWidth:1,
-    backgroundColor: "#ddd"
-  },
-  title:{
-    textAlign: "center",
-    marginTop: 50,
-    fontSize: 28
-  },view: {
-    height: 50,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-});
